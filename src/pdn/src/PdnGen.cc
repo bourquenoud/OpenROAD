@@ -616,12 +616,13 @@ void PdnGen::makeStrap(Grid* grid,
                        int offset,
                        int number_of_straps,
                        bool snap,
+                       odb::dbTechLayerDir direction,
                        StartsWith starts_with,
                        ExtensionMode extend,
                        const std::vector<odb::dbNet*>& nets)
 {
   auto strap = std::make_unique<Straps>(
-      grid, layer, width, pitch, spacing, number_of_straps);
+      grid, layer, width, pitch, direction, spacing, number_of_straps);
   strap->setExtend(extend);
   strap->setOffset(offset);
   strap->setSnapToGrid(snap);

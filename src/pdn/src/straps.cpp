@@ -51,6 +51,7 @@ Straps::Straps(Grid* grid,
                odb::dbTechLayer* layer,
                int width,
                int pitch,
+               odb::dbTechLayerDir direction,
                int spacing,
                int number_of_straps)
     : GridComponent(grid),
@@ -68,8 +69,10 @@ Straps::Straps(Grid* grid,
     spacing_ = TechLayer::snapToManufacturingGrid(
         getBlock()->getDataBase()->getTech(), spacing_, false);
   }
-  if (layer_ != nullptr) {
+  if (layer_ != nullptr && direction == odb::dbTechLayerDir::NONE) {
     direction_ = layer_->getDirection();
+  } else {
+    direction_ = direction;
   }
 }
 

@@ -72,6 +72,17 @@ using utl::PDN;
   }
 }
 
+%typemap(in) odb::dbTechLayerDir {
+  char *str = Tcl_GetStringFromObj($input, 0);
+  if (strcasecmp(str, "Horizontal") == 0) {
+    $1 = pdn::ExtensionMode::HORIZONTAL;
+  } else if (strcasecmp(str, "Vertical") == 0) {
+    $1 = pdn::ExtensionMode::VERTICAL;
+  } else {
+    $1 = odb::dbTechLayerDir::NONE;
+  }
+}
+
 %inline %{
 
 namespace pdn {
@@ -259,6 +270,7 @@ void make_strap(const char* grid_name,
                 bool use_grid_power_order,
                 bool starts_with_power,
                 pdn::ExtensionMode extend,
+                odb::dbTechLayerDir direction,
                 const std::vector<odb::dbNet*>& nets)
 {
   PdnGen* pdngen = ord::getPdnGen();
@@ -279,6 +291,7 @@ void make_strap(const char* grid_name,
                       offset,
                       number_of_straps,
                       snap,
+                      direction,
                       starts_with,
                       extend,
                       nets);

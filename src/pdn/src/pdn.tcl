@@ -288,7 +288,7 @@ sta::define_cmd_args "add_pdn_stripe" {[-grid grid_name] \
 
 proc add_pdn_stripe { args } {
   sta::parse_key_args "add_pdn_stripe" args \
-    keys {-grid -layer -width -pitch -spacing -offset -starts_with -number_of_straps -nets} \
+    keys {-grid -layer -width -pitch -spacing -offset -starts_with -number_of_straps -nets -direction} \
     flags {-followpins -extend_to_core_ring -extend_to_boundary -snap_to_grid}
 
   sta::check_argc_eq0 "add_pdn_stripe" $args
@@ -352,6 +352,11 @@ proc add_pdn_stripe { args } {
     }
   }
 
+  set direction ""
+  if { [info exists keys(-direction)] } {
+    set direction $keys(-direction)
+  }
+
   set layer [pdn::get_layer $keys(-layer)]
   set width [ord::microns_to_dbu $width]
   set pitch [ord::microns_to_dbu $pitch]
@@ -393,6 +398,7 @@ proc add_pdn_stripe { args } {
       $use_grid_power_order \
       $start_with_power \
       $extend \
+      $direction \
       $nets
   }
 }
