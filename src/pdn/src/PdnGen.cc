@@ -622,7 +622,7 @@ void PdnGen::makeStrap(Grid* grid,
                        Direction direction)
 {
   auto strap = std::make_unique<Straps>(
-      grid, layer, width, pitch, spacing, number_of_straps);
+      grid, layer, width, pitch, direction, spacing, number_of_straps);
   strap->setExtend(extend);
   strap->setOffset(offset);
   strap->setSnapToGrid(snap);
