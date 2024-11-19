@@ -64,6 +64,13 @@ enum ExtensionMode
   FIXED
 };
 
+enum Direction
+{
+  AUTO,
+  HORIZONTAL,
+  VERTICAL
+};
+
 enum StartsWith
 {
   GRID,
@@ -171,7 +178,8 @@ class PdnGen
                  bool snap,
                  StartsWith starts_with,
                  ExtensionMode extend,
-                 const std::vector<odb::dbNet*>& nets);
+                 const std::vector<odb::dbNet*>& nets,
+                 Direction direction);
   void makeConnect(Grid* grid,
                    odb::dbTechLayer* layer0,
                    odb::dbTechLayer* layer1,

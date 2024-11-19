@@ -72,6 +72,19 @@ using utl::PDN;
   }
 }
 
+%typemap(in) pdn::Direction {
+  char *str = Tcl_GetStringFromObj($input, 0);
+  if (strcasecmp(str, "AUTO") == 0) {
+    $1 = pdn::Direction::AUTO;
+  } else if (strcasecmp(str, "HORIZONTAL") == 0) {
+    $1 = pdn::Direction::HORIZONTAL;
+  } else if (strcasecmp(str, "VERTICAL") == 0) {
+    $1 = pdn::Direction::VERTICAL;
+  } else {
+    $1 = pdn::Direction::AUTO;
+  }
+}
+
 %inline %{
 
 namespace pdn {
@@ -259,7 +272,8 @@ void make_strap(const char* grid_name,
                 bool use_grid_power_order,
                 bool starts_with_power,
                 pdn::ExtensionMode extend,
-                const std::vector<odb::dbNet*>& nets)
+                const std::vector<odb::dbNet*>& nets,
+                pdn::Direction direction)
 {
   PdnGen* pdngen = ord::getPdnGen();
   StartsWith starts_with = GRID;
@@ -281,7 +295,8 @@ void make_strap(const char* grid_name,
                       snap,
                       starts_with,
                       extend,
-                      nets);
+                      nets,
+                      direction);
   }
 }
 

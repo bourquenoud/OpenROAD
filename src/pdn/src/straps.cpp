@@ -50,6 +50,7 @@ Straps::Straps(Grid* grid,
                odb::dbTechLayer* layer,
                int width,
                int pitch,
+               Direction direction,
                int spacing,
                int number_of_straps)
     : GridComponent(grid),
@@ -67,7 +68,15 @@ Straps::Straps(Grid* grid,
     spacing_ = TechLayer::snapToManufacturingGrid(
         getBlock()->getDataBase()->getTech(), spacing_, false);
   }
-  if (layer_ != nullptr) {
+  if (direction == Direction::HORIZONTAL)
+  {
+    direction_ = odb::dbTechLayerDir::HORIZONTAL;
+  }
+  else if (direction == Direction::VERTICAL)
+  {
+    direction_ = odb::dbTechLayerDir::VERTICAL;
+  }
+  else if (layer_ != nullptr) {
     direction_ = layer_->getDirection();
   }
 }
@@ -1471,6 +1480,7 @@ RepairChannelStraps::RepairChannelStraps(
              target->getLayer(),
              target->getWidth(),
              0,
+             Direction::AUTO,
              target->getSpacing(),
              1),
       nets_(nets),

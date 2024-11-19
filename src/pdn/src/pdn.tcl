@@ -279,13 +279,15 @@ sta::define_cmd_args "add_pdn_stripe" {[-grid grid_name] \
                                        [-extend_to_boundary] \
                                        [-snap_to_grid] \
                                        [-number_of_straps count] \
-                                       [-nets list_of_nets]
+                                       [-nets list_of_nets]\
+                                       [-horizontal] \
+                                       [-vertical]
 }
 
 proc add_pdn_stripe {args} {
   sta::parse_key_args "add_pdn_stripe" args \
     keys {-grid -layer -width -pitch -spacing -offset -starts_with -number_of_straps -nets} \
-    flags {-followpins -extend_to_core_ring -extend_to_boundary -snap_to_grid}
+    flags {-followpins -extend_to_core_ring -extend_to_boundary -snap_to_grid -horizontal -vertical}
 
   sta::check_argc_eq0 "add_pdn_stripe" $args
 
@@ -348,6 +350,15 @@ proc add_pdn_stripe {args} {
     }
   }
 
+  set direction "AUTO"
+  if { [info exists flags(-horizontal)] && [info exists flags(-vertical)] } {
+    utl::error PDN 1050 "Cannot specify both -horizontal and -vertical."
+  } elseif { [info exists flags(-horizontal)] } {
+    set direction "HORIZONTAL"
+  } elseif { [info exists flags(-vertical)] } {
+    set direction "VERTICAL"
+  }
+
   set layer [pdn::get_layer $keys(-layer)]
   set width [ord::microns_to_dbu $width]
   set pitch [ord::microns_to_dbu $pitch]
@@ -386,7 +397,8 @@ proc add_pdn_stripe {args} {
       $use_grid_power_order \
       $start_with_power \
       $extend \
-      $nets
+      $nets \
+      $direction
   }
 }
 
