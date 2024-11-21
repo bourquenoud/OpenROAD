@@ -54,7 +54,7 @@ class Straps : public GridComponent
          odb::dbTechLayer* layer,
          int width,
          int pitch,
-         Direction direction = Direction::AUTO,
+         odb::dbTechLayerDir direction = odb::dbTechLayerDir::NONE,
          int spacing = 0,
          int number_of_straps = 0);
 
